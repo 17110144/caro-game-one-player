@@ -157,7 +157,7 @@ namespace GameCaro
 			else
 				CurrentPlayer = 1;
 
-			MessageBox.Show("The " + player[currentPlayer].Name + " To Win!!!", "Chiến thắng!");
+			MessageBox.Show(player[currentPlayer].Name + " Win!!!", "Chiến thắng!");
 
 		}
 
