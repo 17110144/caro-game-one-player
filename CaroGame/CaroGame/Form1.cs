@@ -18,6 +18,7 @@ namespace CaroGame
         {
             InitializeComponent();
             caroChess = new CaroChess();
+            caroChess.KhoiTaoMangOco();
             grs = pnlBanCo.CreateGraphics();
 
            
@@ -35,7 +36,7 @@ namespace CaroGame
 
         private void pnlBanCo_MouseClick(object sender, MouseEventArgs e)
         {
-
+            caroChess.DanhCo(e.X, e.Y,grs);
         }
     }
 }

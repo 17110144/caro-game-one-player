@@ -31,12 +31,16 @@ namespace CaroGame
         {
             for (int i = 0; i <= this.SoCot; i++) 
             {
-                g.DrawLine(Program.pen, i * OCo._ChieuRong, 0, i * OCo._ChieuRong, _SoDong * OCo._ChieuCao);
+                g.DrawLine(CaroChess.pen, i * OCo.ChieuRong, 0, i * OCo.ChieuRong, _SoDong * OCo.ChieuCao);
             }
             for (int j = 0; j <= this.SoCot; j++)
             {
-                g.DrawLine(Program.pen, 0, j * OCo._ChieuCao, SoCot * OCo._ChieuRong, j * OCo._ChieuCao);
+                g.DrawLine(CaroChess.pen, 0, j * OCo.ChieuCao, SoCot * OCo.ChieuRong, j * OCo.ChieuCao);
             }
+        }
+        public void VeQuanCo(Graphics g,Point point,SolidBrush sb)
+        {
+            g.FillEllipse(sb, point.X, point.Y, OCo.ChieuRong, OCo.ChieuCao);
         }
     }
 }
