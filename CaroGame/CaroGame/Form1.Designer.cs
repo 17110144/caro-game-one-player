@@ -45,6 +45,7 @@
             this.btnPlayervsPlayer.TabIndex = 0;
             this.btnPlayervsPlayer.Text = "Player vs Player";
             this.btnPlayervsPlayer.UseVisualStyleBackColor = false;
+            this.btnPlayervsPlayer.Click += new System.EventHandler(this.btnPlayervsPlayer_Click);
             // 
             // btnPlayervsCom
             // 
@@ -89,7 +90,7 @@
             // 
             // pnlBanCo
             // 
-            this.pnlBanCo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(200)))));
+            this.pnlBanCo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(100)))));
             this.pnlBanCo.Location = new System.Drawing.Point(179, 3);
             this.pnlBanCo.Name = "pnlBanCo";
             this.pnlBanCo.Size = new System.Drawing.Size(510, 509);

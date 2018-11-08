@@ -40,7 +40,7 @@ namespace CaroGame
         }
         public void VeQuanCo(Graphics g,Point point,SolidBrush sb)
         {
-            g.FillEllipse(sb, point.X, point.Y, OCo.ChieuRong, OCo.ChieuCao);
+            g.FillEllipse(sb, point.X + 1 , point.Y + 1, OCo.ChieuRong - 2, OCo.ChieuCao - 2);
         }
     }
 }

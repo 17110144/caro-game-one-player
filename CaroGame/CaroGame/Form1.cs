@@ -32,11 +32,17 @@ namespace CaroGame
         private void pnlBanCo_Paint(object sender, PaintEventArgs e)
         {
             caroChess.VeBanCo(grs);
+            caroChess.VeLaiQuanCo(grs);
         }
 
         private void pnlBanCo_MouseClick(object sender, MouseEventArgs e)
         {
             caroChess.DanhCo(e.X, e.Y,grs);
+        }
+
+        private void btnPlayervsPlayer_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
