@@ -37,12 +37,14 @@ namespace CaroGame
 
         private void pnlBanCo_MouseClick(object sender, MouseEventArgs e)
         {
+            if (!caroChess.SanSang) return;
             caroChess.DanhCo(e.X, e.Y,grs);
         }
 
         private void btnPlayervsPlayer_Click(object sender, EventArgs e)
         {
-
+            grs.Clear(pnlBanCo.BackColor);
+            caroChess.StartPvsP(grs);
         }
     }
 }

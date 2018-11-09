@@ -13,15 +13,15 @@ namespace CaroGame
         public static Pen pen;
         public static SolidBrush sbWhite;
         public static SolidBrush sbBlack;
-        private OCo[,] _MangOco;
-        private BanCo _BanCo;
-        private List<OCo> _List_CacNuocDaDi;
-        private int _LuotDi;
+        private OCo[,] MangOco;
+        private BanCo BanCo;
+        private List<OCo> List_CacNuocDaDi;
+        private int LuotDi;
+        private bool _SanSang;
 
-        internal OCo[,] MangOco { get => _MangOco; set => _MangOco = value; }
-        internal BanCo BanCo { get => _BanCo; set => _BanCo = value; }
-        internal List<OCo> List_CacNuocDaDi { get => _List_CacNuocDaDi; set => _List_CacNuocDaDi = value; }
-        public int LuotDi { get => _LuotDi; set => _LuotDi = value; }
+
+
+        public bool SanSang { get => _SanSang;}
 
         public CaroChess()
         {
@@ -51,6 +51,7 @@ namespace CaroGame
         public bool DanhCo(int MouseX,int MouseY, Graphics g)
         {
             if (MouseX % OCo.ChieuRong == 0 || MouseY % OCo.ChieuCao == 0) return false;     //không cho người chơi đánh ngay chính đường biên
+
             int Cot = MouseX / OCo.ChieuRong;
             int Dong = MouseY / OCo.ChieuCao;
 
@@ -96,6 +97,15 @@ namespace CaroGame
                     BanCo.VeQuanCo(g, oco.ViTri, sbWhite);
                 }
             }
+        }
+
+        //Phương thức khởi động chế độ chơi 2 người
+        public void StartPvsP(Graphics g)
+        {
+            this._SanSang = true;
+            List_CacNuocDaDi = new List<OCo>();
+            KhoiTaoMangOco();
+            VeBanCo(g);
         }
     }
 }
