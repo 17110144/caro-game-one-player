@@ -39,6 +39,8 @@ namespace CaroGame
         {
             if (!caroChess.SanSang) return;
             caroChess.DanhCo(e.X, e.Y,grs);
+            if (caroChess.KiemTraThang())
+                caroChess.KetThucTroChoi();
         }
 
         private void btnPlayervsPlayer_Click(object sender, EventArgs e)

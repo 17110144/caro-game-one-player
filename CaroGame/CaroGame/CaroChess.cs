@@ -8,6 +8,13 @@ using System.Windows.Forms;
 
 namespace CaroGame
 {
+    public enum KETTHUC
+    {
+        HoaCo,
+        Player1,
+        Player2,
+        COM        
+    }
     class CaroChess
     {
         public static Pen pen;
@@ -18,7 +25,7 @@ namespace CaroGame
         private Stack<OCo> stk_CacNuocDaDi;
         private int LuotDi;
         private bool _SanSang;
-
+        private KETTHUC ketThuc;
 
 
         public bool SanSang { get => _SanSang; }
@@ -119,6 +126,114 @@ namespace CaroGame
             VeBanCo(g);
             VeLaiQuanCo(g);
         }
+
+        #region Duyệt thắng
+        public void KetThucTroChoi()
+        {
+            switch(ketThuc)
+            {
+                case KETTHUC.HoaCo:
+                    MessageBox.Show("Hòa Cờ!");
+                    break;
+                case KETTHUC.Player1:
+                    MessageBox.Show("Người chơi 1 thắng!");
+                    break;
+                case KETTHUC.Player2:
+                    MessageBox.Show("Người chơi 2 thắng!");
+                    break;
+                case KETTHUC.COM:
+                    MessageBox.Show("Máy thắng!");
+                    break;
+            }
+            _SanSang = false;
+        }
+
+        public bool KiemTraThang()
+        {
+            if (stk_CacNuocDaDi.Count == BanCo.SoCot * BanCo.SoDong)
+            {
+                ketThuc = KETTHUC.HoaCo;
+                return true;
+            }
+            foreach(OCo oco in stk_CacNuocDaDi)
+            {
+                if (DuyetDoc(oco.Dong, oco.Cot, oco.SoHuu) || DuyetNgang(oco.Dong, oco.Cot, oco.SoHuu))
+                {
+                    ketThuc = oco.SoHuu == 1 ? KETTHUC.Player1 : KETTHUC.Player2;
+                    return true;
+                }
+            }
+
+
+            return false;
+        }
+
+        private bool DuyetDoc(int curDong, int curCot, int curSoHuu)
+        {
+            if (curDong > BanCo.SoDong - 5)
+                return false;
+            int Dem;
+            for (Dem = 1; Dem < 5; Dem++) 
+            {
+                if (MangOco[curDong + Dem, curCot].SoHuu != curSoHuu)
+                    return false;
+            }
+            if (curDong == 0 || curDong + Dem == BanCo.SoDong) 
+                return true;
+            if (MangOco[curDong - 1, curCot].SoHuu == 0 || MangOco[curDong+Dem,curCot].SoHuu ==0)
+                return true;
+            return false;
+        }
+        private bool DuyetNgang(int curDong, int curCot, int curSoHuu)
+        {
+            if (curCot > BanCo.SoCot - 5)
+                return false;
+            int Dem;
+            for (Dem = 1; Dem < 5; Dem++)
+            {
+                if (MangOco[curDong, curCot + Dem].SoHuu != curSoHuu) 
+                    return false;
+            }
+            if (curCot == 0 || curCot + Dem == BanCo.SoCot)
+                return true;
+            if (MangOco[curDong, curCot - 1].SoHuu == 0 || MangOco[curDong, curCot + Dem].SoHuu == 0) 
+                return true;
+            return false;
+        }
+        private bool DuyetCheoXuoi(int curDong, int curCot, int curSoHuu)
+        {
+            if (curCot > BanCo.SoCot - 5)
+                return false;
+            int Dem;
+            for (Dem = 1; Dem < 5; Dem++)
+            {
+                if (MangOco[curDong, curCot + Dem].SoHuu != curSoHuu)
+                    return false;
+            }
+            if (curCot == 0 || curCot + Dem == BanCo.SoCot)
+                return true;
+            if (MangOco[curDong, curCot - 1].SoHuu == 0 || MangOco[curDong, curCot + Dem].SoHuu == 0)
+                return true;
+            return false;
+        }
+        private bool DuyetCheoNguoc(int curDong, int curCot, int curSoHuu)
+        {
+            if (curCot > BanCo.SoCot - 5)
+                return false;
+            int Dem;
+            for (Dem = 1; Dem < 5; Dem++)
+            {
+                if (MangOco[curDong, curCot + Dem].SoHuu != curSoHuu)
+                    return false;
+            }
+            if (curCot == 0 || curCot + Dem == BanCo.SoCot)
+                return true;
+            if (MangOco[curDong, curCot - 1].SoHuu == 0 || MangOco[curDong, curCot + Dem].SoHuu == 0)
+                return true;
+            return false;
+        }
+
+        #endregion
 
     }
 }
