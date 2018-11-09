@@ -89,6 +89,7 @@
             this.btnUndo.TabIndex = 4;
             this.btnUndo.Text = "UNDO";
             this.btnUndo.UseVisualStyleBackColor = false;
+            this.btnUndo.Click += new System.EventHandler(this.btnUndo_Click);
             // 
             // pnlBanCo
             // 

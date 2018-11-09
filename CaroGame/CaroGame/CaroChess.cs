@@ -15,7 +15,7 @@ namespace CaroGame
         public static SolidBrush sbBlack;
         private OCo[,] MangOco;
         private BanCo BanCo;
-        private List<OCo> List_CacNuocDaDi;
+        private Stack<OCo> stk_CacNuocDaDi;
         private int LuotDi;
         private bool _SanSang;
 
@@ -30,7 +30,7 @@ namespace CaroGame
             sbBlack = new SolidBrush(Color.Black);
             BanCo = new BanCo(20, 20);
             MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];
-            List_CacNuocDaDi = new List<OCo>();
+            stk_CacNuocDaDi = new Stack<OCo>();
             LuotDi = 1;
         }
         public void VeBanCo(Graphics g)
@@ -80,13 +80,13 @@ namespace CaroGame
 
             }
 
-            List_CacNuocDaDi.Add(MangOco[Dong, Cot]);
+            stk_CacNuocDaDi.Push(MangOco[Dong, Cot]);
 
             return true;
         }
         public void VeLaiQuanCo(Graphics g)
         {
-            foreach (OCo oco in List_CacNuocDaDi)
+            foreach (OCo oco in stk_CacNuocDaDi)
             {
                 if (oco.SoHuu == 1)
                 {
@@ -103,9 +103,22 @@ namespace CaroGame
         public void StartPvsP(Graphics g)
         {
             this._SanSang = true;
-            List_CacNuocDaDi = new List<OCo>();          
+            stk_CacNuocDaDi = new Stack<OCo>();          
             KhoiTaoMangOco();
             VeBanCo(g);
         }
+
+        public void Undo(Graphics g)
+        {
+            if(stk_CacNuocDaDi.Count != 0)
+            {
+                OCo oco = stk_CacNuocDaDi.Pop();
+                MangOco[oco.Dong, oco.Cot].SoHuu = 0;
+            }
+            
+            VeBanCo(g);
+            VeLaiQuanCo(g);
+        }
+
     }
 }

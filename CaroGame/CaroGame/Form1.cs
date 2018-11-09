@@ -46,5 +46,11 @@ namespace CaroGame
             grs.Clear(pnlBanCo.BackColor);
             caroChess.StartPvsP(grs);
         }
+
+        private void btnUndo_Click(object sender, EventArgs e)
+        {
+            grs.Clear(pnlBanCo.BackColor);
+            caroChess.Undo(grs);
+        }
     }
 }

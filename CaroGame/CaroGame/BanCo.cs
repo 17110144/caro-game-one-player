@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
+namespace CaroGame
 {
     class BanCo
     {
@@ -39,7 +40,7 @@ using System.Drawing;
         }
         public void VeQuanCo(Graphics g, Point point, SolidBrush sb)
         {
-            g.FillEllipse(sb, point.X + 1, point.Y + 1, OCo.ChieuRong - 2, OCo.ChieuCao - 2);
+            g.FillEllipse(sb, point.X + 2, point.Y + 2, OCo.ChieuRong - 4, OCo.ChieuCao - 4);
         }
     }
 }
