@@ -21,7 +21,7 @@ namespace CaroGame
 
 
 
-        public bool SanSang { get => _SanSang;}
+        public bool SanSang { get => _SanSang; }
 
         public CaroChess()
         {
@@ -40,15 +40,15 @@ namespace CaroGame
 
         public void KhoiTaoMangOco()
         {
-            for(int i=0;i < BanCo.SoDong;i++)
+            for (int i = 0; i < BanCo.SoDong; i++)
             {
-                for(int j=0;j<BanCo.SoCot; j++)
+                for (int j = 0; j < BanCo.SoCot; j++)
                 {
-                    MangOco[i,j]=new OCo(i,j,new Point(j*OCo.ChieuRong,i*OCo.ChieuCao),0);
+                    MangOco[i, j] = new OCo(i, j, new Point(j * OCo.ChieuRong, i * OCo.ChieuCao), 0);
                 }
             }
-        } 
-        public bool DanhCo(int MouseX,int MouseY, Graphics g)
+        }
+        public bool DanhCo(int MouseX, int MouseY, Graphics g)
         {
             if (MouseX % OCo.ChieuRong == 0 || MouseY % OCo.ChieuCao == 0) return false;     //không cho người chơi đánh ngay chính đường biên
 
@@ -58,7 +58,7 @@ namespace CaroGame
             if (MangOco[Dong, Cot].SoHuu != 0)
                 return false;
 
-            switch(LuotDi)
+            switch (LuotDi)
             {
                 case 1:
                     {
@@ -79,20 +79,20 @@ namespace CaroGame
                     break;
 
             }
-                      
+
             List_CacNuocDaDi.Add(MangOco[Dong, Cot]);
 
             return true;
         }
         public void VeLaiQuanCo(Graphics g)
         {
-            foreach(OCo oco in List_CacNuocDaDi)
+            foreach (OCo oco in List_CacNuocDaDi)
             {
-                if(oco.SoHuu==1)
+                if (oco.SoHuu == 1)
                 {
                     BanCo.VeQuanCo(g, oco.ViTri, sbBlack);
                 }
-                else if(oco.SoHuu == 2 )
+                else if (oco.SoHuu == 2)
                 {
                     BanCo.VeQuanCo(g, oco.ViTri, sbWhite);
                 }
@@ -103,7 +103,7 @@ namespace CaroGame
         public void StartPvsP(Graphics g)
         {
             this._SanSang = true;
-            List_CacNuocDaDi = new List<OCo>();
+            List_CacNuocDaDi = new List<OCo>();          
             KhoiTaoMangOco();
             VeBanCo(g);
         }
