@@ -50,8 +50,7 @@ namespace CaroGame
         }
 
         private void btnUndo_Click(object sender, EventArgs e)
-        {
-            grs.Clear(pnlBanCo.BackColor);
+        {          
             caroChess.Undo(grs);
         }
     }
