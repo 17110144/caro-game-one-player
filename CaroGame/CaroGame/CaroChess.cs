@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections;
 
 namespace CaroGame
 {
@@ -150,7 +151,9 @@ namespace CaroGame
                     MessageBox.Show("Máy thắng!");
                     break;
             }
+            stk_CacNuocDaDi.Clear();
             _SanSang = false;
+            
         }
 
         public bool KiemTraThang()
