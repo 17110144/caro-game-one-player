@@ -188,7 +188,7 @@ namespace CaroGame
                     return false;
             }
             if (curDong == 0 || curDong + Dem == BanCo.SoDong)
-                return true;
+                return false;
             if (MangOco[curDong - 1, curCot].SoHuu == 0 || MangOco[curDong + Dem, curCot].SoHuu == 0)
                 return true;
             return false;
@@ -204,7 +204,7 @@ namespace CaroGame
                     return false;
             }
             if (curCot == 0 || curCot + Dem == BanCo.SoCot)
-                return true;
+                return false;
             if (MangOco[curDong, curCot - 1].SoHuu == 0 || MangOco[curDong, curCot + Dem].SoHuu == 0)
                 return true;
             return false;
@@ -220,7 +220,7 @@ namespace CaroGame
                     return false;
             }
             if (curDong == 0 || curDong + Dem == BanCo.SoDong || curCot == 0 || curCot + Dem == BanCo.SoCot)
-                return true;
+                return false;
             if (MangOco[curDong - 1, curCot - 1].SoHuu == 0 || MangOco[curDong + Dem, curCot + Dem].SoHuu == 0)
                 return true;
             return false;
@@ -236,7 +236,7 @@ namespace CaroGame
                     return false;
             }
             if (curDong == 4 || curDong == BanCo.SoDong - 1 || curCot == 0 || curCot + Dem == BanCo.SoCot)
-                return true;
+                return false;
             if (MangOco[curDong + 1, curCot - 1].SoHuu == 0 || MangOco[curDong - Dem, curCot + Dem].SoHuu == 0)
                 return true;
             return false;
