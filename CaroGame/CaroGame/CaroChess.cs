@@ -20,6 +20,10 @@ namespace CaroGame
         public static Pen pen;
         public static SolidBrush sbWhite;
         public static SolidBrush sbBlack;
+
+        //public static TextureBrush MarkX;
+        //public static TextureBrush MarkO;
+
         public static SolidBrush sbScreen;      //nút hình elip để vẽ đè lên 2 quân cờ khi dùng undo
         private OCo[,] MangOco;
         private BanCo BanCo;
@@ -30,12 +34,17 @@ namespace CaroGame
 
 
         public bool SanSang { get => _SanSang; }
+       
 
         public CaroChess()
         {
             pen = new Pen(Color.Black);
             sbWhite = new SolidBrush(Color.White);
             sbBlack = new SolidBrush(Color.Black);
+
+            //MarkO = new TextureBrush(Image.FromFile("O.bmp"));
+            //MarkX = new TextureBrush(Image.FromFile("X.bmp"));
+
             sbScreen = new SolidBrush(Color.FromArgb(0, 192, 100));
             BanCo = new BanCo(20, 20);
             MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];
@@ -72,14 +81,14 @@ namespace CaroGame
                 case 1:
                     {
                         MangOco[Dong, Cot].SoHuu = 1;
-                        BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, sbBlack);
+                        BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, sbWhite);
                         LuotDi = 2;
                         break;
                     }
                 case 2:
                     {
                         MangOco[Dong, Cot].SoHuu = 2;
-                        BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, sbWhite);
+                        BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, sbBlack);
                         LuotDi = 1;
                         break;
                     }
@@ -99,11 +108,11 @@ namespace CaroGame
             {
                 if (oco.SoHuu == 1)
                 {
-                    BanCo.VeQuanCo(g, oco.ViTri, sbBlack);
+                    BanCo.VeQuanCo(g, oco.ViTri, sbWhite);
                 }
                 else if (oco.SoHuu == 2)
                 {
-                    BanCo.VeQuanCo(g, oco.ViTri, sbWhite);
+                    BanCo.VeQuanCo(g, oco.ViTri, sbBlack);
                 }
             }
         }
@@ -123,11 +132,9 @@ namespace CaroGame
             {
                 OCo oco = stk_CacNuocDaDi.Pop();
                 MangOco[oco.Dong, oco.Cot].SoHuu = 0;
-                BanCo.VeQuanCo(g, oco.ViTri, sbScreen);
+                BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);
             }
-
         }
-
 
         #region Duyệt thắng
         public void KetThucTroChoi()
