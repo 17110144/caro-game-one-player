@@ -40,10 +40,10 @@
             // 
             this.btnPlayervsPlayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.btnPlayervsPlayer.Font = new System.Drawing.Font("Cambria", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPlayervsPlayer.Location = new System.Drawing.Point(23, 470);
-            this.btnPlayervsPlayer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPlayervsPlayer.Location = new System.Drawing.Point(23, 462);
+            this.btnPlayervsPlayer.Margin = new System.Windows.Forms.Padding(4);
             this.btnPlayervsPlayer.Name = "btnPlayervsPlayer";
-            this.btnPlayervsPlayer.Size = new System.Drawing.Size(185, 44);
+            this.btnPlayervsPlayer.Size = new System.Drawing.Size(185, 52);
             this.btnPlayervsPlayer.TabIndex = 0;
             this.btnPlayervsPlayer.Text = "P vs P";
             this.btnPlayervsPlayer.UseVisualStyleBackColor = false;
@@ -54,9 +54,9 @@
             this.btnPlayervsCom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.btnPlayervsCom.Font = new System.Drawing.Font("Cambria", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPlayervsCom.Location = new System.Drawing.Point(25, 546);
-            this.btnPlayervsCom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPlayervsCom.Margin = new System.Windows.Forms.Padding(4);
             this.btnPlayervsCom.Name = "btnPlayervsCom";
-            this.btnPlayervsCom.Size = new System.Drawing.Size(183, 43);
+            this.btnPlayervsCom.Size = new System.Drawing.Size(183, 48);
             this.btnPlayervsCom.TabIndex = 1;
             this.btnPlayervsCom.Text = "P vs Com";
             this.btnPlayervsCom.UseVisualStyleBackColor = false;
@@ -66,10 +66,10 @@
             this.btnUndo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.btnUndo.Font = new System.Drawing.Font("Cambria", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUndo.ForeColor = System.Drawing.Color.Black;
-            this.btnUndo.Location = new System.Drawing.Point(23, 384);
-            this.btnUndo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnUndo.Location = new System.Drawing.Point(23, 378);
+            this.btnUndo.Margin = new System.Windows.Forms.Padding(4);
             this.btnUndo.Name = "btnUndo";
-            this.btnUndo.Size = new System.Drawing.Size(185, 48);
+            this.btnUndo.Size = new System.Drawing.Size(185, 54);
             this.btnUndo.TabIndex = 4;
             this.btnUndo.Text = "UNDO";
             this.btnUndo.UseVisualStyleBackColor = false;
@@ -78,8 +78,8 @@
             // pnlBanCo
             // 
             this.pnlBanCo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(100)))));
-            this.pnlBanCo.Location = new System.Drawing.Point(239, 4);
-            this.pnlBanCo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlBanCo.Location = new System.Drawing.Point(216, 4);
+            this.pnlBanCo.Margin = new System.Windows.Forms.Padding(4);
             this.pnlBanCo.Name = "pnlBanCo";
             this.pnlBanCo.Size = new System.Drawing.Size(680, 626);
             this.pnlBanCo.TabIndex = 5;
@@ -91,7 +91,7 @@
             this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(200)))));
             this.textBox1.Font = new System.Drawing.Font("Cambria", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(23, 13);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(185, 94);
@@ -105,14 +105,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(920, 635);
+            this.ClientSize = new System.Drawing.Size(908, 622);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pnlBanCo);
             this.Controls.Add(this.btnUndo);
             this.Controls.Add(this.btnPlayervsCom);
             this.Controls.Add(this.btnPlayervsPlayer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmCoCaro";
             this.Text = "Game Caro";
             this.Load += new System.EventHandler(this.frmCoCaro_Load);

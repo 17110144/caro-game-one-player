@@ -18,11 +18,9 @@ namespace CaroGame
     class CaroChess
     {
         public static Pen pen;
-        public static SolidBrush sbWhite;
-        public static SolidBrush sbBlack;
 
-        //public static TextureBrush MarkX;
-        //public static TextureBrush MarkO;
+        public static TextureBrush MarkX;
+        public static TextureBrush MarkO;
 
         public static SolidBrush sbScreen;      //nút hình elip để vẽ đè lên 2 quân cờ khi dùng undo
         private OCo[,] MangOco;
@@ -39,11 +37,9 @@ namespace CaroGame
         public CaroChess()
         {
             pen = new Pen(Color.Black);
-            sbWhite = new SolidBrush(Color.White);
-            sbBlack = new SolidBrush(Color.Black);
 
-            //MarkO = new TextureBrush(Image.FromFile("O.bmp"));
-            //MarkX = new TextureBrush(Image.FromFile("X.bmp"));
+            MarkO = new TextureBrush(Image.FromFile("O.png"));
+            MarkX = new TextureBrush(Image.FromFile("X.png"));
 
             sbScreen = new SolidBrush(Color.FromArgb(0, 192, 100));
             BanCo = new BanCo(20, 20);
@@ -81,14 +77,14 @@ namespace CaroGame
                 case 1:
                     {
                         MangOco[Dong, Cot].SoHuu = 1;
-                        BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, sbWhite);
+                        BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, MarkX);
                         LuotDi = 2;
                         break;
                     }
                 case 2:
                     {
                         MangOco[Dong, Cot].SoHuu = 2;
-                        BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, sbBlack);
+                        BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, MarkO);
                         LuotDi = 1;
                         break;
                     }
@@ -108,11 +104,11 @@ namespace CaroGame
             {
                 if (oco.SoHuu == 1)
                 {
-                    BanCo.VeQuanCo(g, oco.ViTri, sbWhite);
+                    BanCo.VeQuanCo(g, oco.ViTri, MarkX);
                 }
                 else if (oco.SoHuu == 2)
                 {
-                    BanCo.VeQuanCo(g, oco.ViTri, sbBlack);
+                    BanCo.VeQuanCo(g, oco.ViTri, MarkO);
                 }
             }
         }
@@ -172,8 +168,6 @@ namespace CaroGame
                     return true;
                 }
             }
-
-
             return false;
         }
 
@@ -188,7 +182,7 @@ namespace CaroGame
                     return false;
             }
             if (curDong == 0 || curDong + Dem == BanCo.SoDong)
-                return false;
+                return true;
             if (MangOco[curDong - 1, curCot].SoHuu == 0 || MangOco[curDong + Dem, curCot].SoHuu == 0)
                 return true;
             return false;
@@ -204,7 +198,7 @@ namespace CaroGame
                     return false;
             }
             if (curCot == 0 || curCot + Dem == BanCo.SoCot)
-                return false;
+                return true;
             if (MangOco[curDong, curCot - 1].SoHuu == 0 || MangOco[curDong, curCot + Dem].SoHuu == 0)
                 return true;
             return false;
@@ -220,7 +214,7 @@ namespace CaroGame
                     return false;
             }
             if (curDong == 0 || curDong + Dem == BanCo.SoDong || curCot == 0 || curCot + Dem == BanCo.SoCot)
-                return false;
+                return true;
             if (MangOco[curDong - 1, curCot - 1].SoHuu == 0 || MangOco[curDong + Dem, curCot + Dem].SoHuu == 0)
                 return true;
             return false;
@@ -236,12 +230,11 @@ namespace CaroGame
                     return false;
             }
             if (curDong == 4 || curDong == BanCo.SoDong - 1 || curCot == 0 || curCot + Dem == BanCo.SoCot)
-                return false;
+                return true;
             if (MangOco[curDong + 1, curCot - 1].SoHuu == 0 || MangOco[curDong - Dem, curCot + Dem].SoHuu == 0)
                 return true;
             return false;
         }
-
         #endregion
 
     }

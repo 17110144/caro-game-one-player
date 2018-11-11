@@ -38,13 +38,10 @@ namespace CaroGame
                 g.DrawLine(CaroChess.pen, 0, j * OCo.ChieuCao, SoCot * OCo.ChieuRong, j * OCo.ChieuCao);
             }
         }
-        public void VeQuanCo(Graphics g, Point point, SolidBrush sb)
-        {
-            g.FillEllipse(sb, point.X + 2, point.Y + 2, OCo.ChieuRong - 4, OCo.ChieuCao - 4);
-        }
+
         public void VeQuanCo(Graphics g, Point point, TextureBrush mark)
         {
-            g.FillEllipse(mark, point.X + 2, point.Y + 2, OCo.ChieuRong - 4, OCo.ChieuCao - 4);
+            g.FillEllipse(mark, point.X, point.Y, OCo.ChieuRong, OCo.ChieuCao);
         }
         public void XoaQuanCo(Graphics g,Point point, SolidBrush sb)
         {
