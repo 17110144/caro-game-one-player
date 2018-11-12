@@ -22,7 +22,6 @@ namespace CaroGame
 
         public static TextureBrush MarkX;
         public static TextureBrush MarkO;
-
         public static SolidBrush sbScreen;      //nút hình elip để vẽ đè lên 2 quân cờ khi dùng undo
         private OCo[,] MangOco;
         private BanCo BanCo;
@@ -33,16 +32,14 @@ namespace CaroGame
 
 
         public bool SanSang { get => _SanSang; }
-       
+        
 
         public CaroChess()
         {
             pen = new Pen(Color.Black);
-
             MarkO = new TextureBrush(Image.FromFile("O.png"));
             MarkX = new TextureBrush(Image.FromFile("X.png"));
-
-            sbScreen = new SolidBrush(Color.FromArgb(0, 192, 100));
+            sbScreen = new SolidBrush(Color.FromArgb(224, 224, 224)); //nút có màu trùng với nền bàn cờ để chèn lên
             BanCo = new BanCo(20, 20);
             MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];
             stk_CacNuocDaDi = new Stack<OCo>();
@@ -63,7 +60,7 @@ namespace CaroGame
                 }
             }
         }
-        public bool DanhCo(int MouseX, int MouseY, Graphics g)
+        public bool DanhCo(int MouseX, int MouseY, Graphics g, PictureBox p)
         {
             if (MouseX % OCo.ChieuRong == 0 || MouseY % OCo.ChieuCao == 0) return false;     //không cho người chơi đánh ngay chính đường biên
 
@@ -77,16 +74,20 @@ namespace CaroGame
             {
                 case 1:
                     {
+                       
                         MangOco[Dong, Cot].SoHuu = 1;
                         BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, MarkX);
                         LuotDi = 2;
+                        p.Image = Image.FromFile("picO.png");
                         break;
                     }
                 case 2:
                     {
+                       
                         MangOco[Dong, Cot].SoHuu = 2;
                         BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, MarkO);
                         LuotDi = 1;
+                        p.Image = Image.FromFile("picX.png");
                         break;
                     }
                 default:
@@ -129,7 +130,7 @@ namespace CaroGame
             {
                 OCo oco = stk_CacNuocDaDi.Pop();
                 MangOco[oco.Dong, oco.Cot].SoHuu = 0;
-                BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);
+                BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);             
             }
         }
 

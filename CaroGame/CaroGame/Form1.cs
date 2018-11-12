@@ -14,19 +14,21 @@ namespace CaroGame
     {
         private CaroChess caroChess;
         private Graphics grs;
+        private PictureBox p;
+
         public frmCoCaro()
         {
             InitializeComponent();
             caroChess = new CaroChess();
             caroChess.KhoiTaoMangOco();
             grs = pnlBanCo.CreateGraphics();
-
+            p = pctbMark;
            
         }
 
         private void frmCoCaro_Load(object sender, EventArgs e)
         {
-
+            grs.Clear(pnlBanCo.BackColor);
         }
 
         private void pnlBanCo_Paint(object sender, PaintEventArgs e)
@@ -38,7 +40,9 @@ namespace CaroGame
         private void pnlBanCo_MouseClick(object sender, MouseEventArgs e)
         {
             if (!caroChess.SanSang) return;
-            caroChess.DanhCo(e.X, e.Y,grs);
+
+            caroChess.DanhCo(e.X, e.Y,grs,p);
+            
             if (caroChess.KiemTraThang())
                 caroChess.KetThucTroChoi();
         }
@@ -48,10 +52,20 @@ namespace CaroGame
             grs.Clear(pnlBanCo.BackColor);
             caroChess.StartPvsP(grs);
         }
+        private void btnPlayervsCom_Click(object sender, EventArgs e)
+        {
+            grs.Clear(pnlBanCo.BackColor);
+        }
 
         private void btnUndo_Click(object sender, EventArgs e)
         {          
             caroChess.Undo(grs);
         }
+
+        private void btnNewGame_Click(object sender, EventArgs e)
+        {
+            grs.Clear(pnlBanCo.BackColor);
+        }
+
     }
 }
