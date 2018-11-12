@@ -58,8 +58,19 @@ namespace CaroGame
         }
 
         private void btnUndo_Click(object sender, EventArgs e)
-        {          
+        {           
             caroChess.Undo(grs);
+            if (caroChess.LuotDi == 1)
+            {
+                caroChess.LuotDi = 2;
+                pctbMark.Image = Image.FromFile("picO.png");
+            }
+            else
+            {
+                caroChess.LuotDi = 1;
+                pctbMark.Image = Image.FromFile("picX.png");
+            }
+
         }
 
         private void btnNewGame_Click(object sender, EventArgs e)

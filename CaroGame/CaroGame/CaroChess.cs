@@ -26,13 +26,13 @@ namespace CaroGame
         private OCo[,] MangOco;
         private BanCo BanCo;
         private Stack<OCo> stk_CacNuocDaDi;
-        private int LuotDi;
+        private int _LuotDi;
         private bool _SanSang;
         private KETTHUC ketThuc;
 
 
         public bool SanSang { get => _SanSang; }
-        
+        public int LuotDi { get => _LuotDi; set => _LuotDi = value; }
 
         public CaroChess()
         {
