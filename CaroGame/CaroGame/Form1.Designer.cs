@@ -103,7 +103,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(185, 94);
             this.textBox1.TabIndex = 6;
-            this.textBox1.Text = "Hãy Chọn Chế Độ Chơi \r\nĐể Bắt Đầu Chơi Game!";
+            this.textBox1.Text = "Hãy Chọn Chế Độ Chơi Để Bắt Đầu Chơi Game!";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox1.UseWaitCursor = true;
             // 

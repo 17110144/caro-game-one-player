@@ -17,6 +17,9 @@ namespace CaroGame
         private Point _ViTri;
         private int _SoHuu;
 
+        public OCo()
+        { }
+
         public int Dong { get => _Dong; set => _Dong = value; }
         public int Cot { get => _Cot; set => _Cot = value; }
         public Point ViTri { get => _ViTri; set => _ViTri = value; }

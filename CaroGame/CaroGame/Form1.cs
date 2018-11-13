@@ -40,11 +40,20 @@ namespace CaroGame
         private void pnlBanCo_MouseClick(object sender, MouseEventArgs e)
         {
             if (!caroChess.SanSang) return;
-
-            caroChess.DanhCo(e.X, e.Y,grs,p);
-            
-            if (caroChess.KiemTraThang())
-                caroChess.KetThucTroChoi();
+            if(caroChess.DanhCo(e.X, e.Y,grs,p))
+            {
+                if (caroChess.KiemTraThang())
+                    caroChess.KetThucTroChoi();
+                else
+                {
+                    if (caroChess.CheDoChoi == 2)
+                    {
+                        caroChess.KhoiDongCom(grs);
+                        if (caroChess.KiemTraThang())
+                            caroChess.KetThucTroChoi();
+                    }
+                }
+            }
         }
 
         private void btnPlayervsPlayer_Click(object sender, EventArgs e)
@@ -55,21 +64,26 @@ namespace CaroGame
         private void btnPlayervsCom_Click(object sender, EventArgs e)
         {
             grs.Clear(pnlBanCo.BackColor);
+            caroChess.StartPvsCom(grs);
         }
 
         private void btnUndo_Click(object sender, EventArgs e)
         {           
             caroChess.Undo(grs);
-            if (caroChess.LuotDi == 1)
+            if(caroChess.CheDoChoi == 1)
             {
-                caroChess.LuotDi = 2;
-                pctbMark.Image = Image.FromFile("picO.png");
+                if (caroChess.LuotDi == 1)
+                {
+                    caroChess.LuotDi = 2;
+                    pctbMark.Image = Image.FromFile("picO.png");
+                }
+                else
+                {
+                    caroChess.LuotDi = 1;
+                    pctbMark.Image = Image.FromFile("picX.png");
+                }
             }
-            else
-            {
-                caroChess.LuotDi = 1;
-                pctbMark.Image = Image.FromFile("picX.png");
-            }
+
 
         }
 

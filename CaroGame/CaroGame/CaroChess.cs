@@ -29,16 +29,20 @@ namespace CaroGame
         private int _LuotDi;
         private bool _SanSang;
         private KETTHUC ketThuc;
-
+        private int _CheDoChoi;
+        public static PictureBox p;
 
         public bool SanSang { get => _SanSang; }
         public int LuotDi { get => _LuotDi; set => _LuotDi = value; }
+        public int CheDoChoi { get => _CheDoChoi; set => _CheDoChoi = value; }
 
         public CaroChess()
         {
             pen = new Pen(Color.Black);
             MarkO = new TextureBrush(Image.FromFile("O.png"));
             MarkX = new TextureBrush(Image.FromFile("X.png"));
+            p = new PictureBox();
+            p.Image = Image.FromFile("picX.png");
             sbScreen = new SolidBrush(Color.FromArgb(224, 224, 224)); //nút có màu trùng với nền bàn cờ để chèn lên
             BanCo = new BanCo(20, 20);
             MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];
@@ -120,21 +124,39 @@ namespace CaroGame
         {
             this._SanSang = true;
             stk_CacNuocDaDi = new Stack<OCo>();
+            LuotDi = 1;
+            CheDoChoi = 1;
             KhoiTaoMangOco();
             VeBanCo(g);
         }
 
         public void Undo(Graphics g)
         {
-            if (stk_CacNuocDaDi.Count != 0)
+            if (CheDoChoi == 1) 
             {
-                OCo oco = stk_CacNuocDaDi.Pop();
-                MangOco[oco.Dong, oco.Cot].SoHuu = 0;
-                BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);             
+                if (stk_CacNuocDaDi.Count != 0)
+                {
+                    OCo oco = stk_CacNuocDaDi.Pop();
+                    MangOco[oco.Dong, oco.Cot].SoHuu = 0;
+                    BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);
+                }
+            }
+            else
+            {
+                if (stk_CacNuocDaDi.Count != 0)
+                {
+                    OCo oco = stk_CacNuocDaDi.Pop();                   
+                    MangOco[oco.Dong, oco.Cot].SoHuu = 0;
+                    BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);
+                    OCo oco2 = stk_CacNuocDaDi.Pop();
+                    MangOco[oco2.Dong, oco2.Cot].SoHuu = 0;
+                    BanCo.XoaQuanCo(g, oco2.ViTri, sbScreen);
+                }
             }
         }
 
         #region Duyệt thắng
+
         public void KetThucTroChoi()
         {
             switch (ketThuc)
@@ -241,5 +263,402 @@ namespace CaroGame
         }
         #endregion
 
+        public void StartPvsCom(Graphics g)
+        {
+            this._SanSang = true;
+            stk_CacNuocDaDi = new Stack<OCo>();
+            LuotDi = 1;
+            CheDoChoi = 2;
+            KhoiTaoMangOco();
+            VeBanCo(g);
+            KhoiDongCom(g);
+        }
+        #region AI
+        private long[] MangDiemTanCong = new long[7] { 0, 9, 54, 162, 1458, 13112, 118008 };
+        private long[] MangDiemPhongNgu = new long[7] { 0, 3, 27, 99, 729, 6561, 59049 };
+
+        public void KhoiDongCom(Graphics g)
+        {
+            if(stk_CacNuocDaDi.Count == 0)
+            {
+                DanhCo(BanCo.SoDong / 2 * OCo.ChieuCao + 1, BanCo.SoCot / 2 * OCo.ChieuRong + 1, g, p);                
+                LuotDi = 2;
+            }
+            else
+            {
+                OCo oco = TimKiemNuocDi();
+                DanhCo(oco.ViTri.X + 1, oco.ViTri.Y + 1, g, p);
+                LuotDi = 2;
+            }
+        }
+        private OCo TimKiemNuocDi()
+        {
+            OCo kq = new OCo();
+            long DiemToiUu = 0;
+            for (int i = 0; i < BanCo.SoDong; i++) 
+            {
+                for (int j = 0; j < BanCo.SoCot; j++) 
+                {
+                    if(MangOco[i,j].SoHuu == 0)
+                    {
+                        long DiemTanCong = DiemTC_DuyetDoc(i,j) + DiemTC_DuyetNgang(i,j) + DiemTC_DuyetCheoXuoi(i,j) + DiemTC_DuyetCheoNguoc(i,j);
+                        long DiemPhongNgu = DiemPN_DuyetDoc(i,j) + DiemPN_DuyetNgang(i,j) + DiemPN_DuyetCheoXuoi(i,j) + DiemPN_DuyetCheoNguoc(i,j);
+                       
+                        if (DiemPhongNgu <= DiemTanCong)
+                        {
+                            if (DiemToiUu <= DiemTanCong)
+                            {
+                                DiemToiUu = DiemTanCong;
+                                kq = new OCo(MangOco[i, j].Dong, MangOco[i, j].Cot, MangOco[i, j].ViTri, MangOco[i, j].SoHuu);
+                            }
+                        }
+                        else
+                        {
+                            if(DiemToiUu <= DiemPhongNgu)
+                            {
+                                DiemToiUu = DiemPhongNgu;
+                                kq = new OCo(MangOco[i, j].Dong, MangOco[i, j].Cot, MangOco[i, j].ViTri, MangOco[i, j].SoHuu);
+
+                            }
+                        }
+                    }
+                }
+            }
+            return kq;
+        }
+
+        #region Điểm Tấn Công
+        private long DiemTC_DuyetDoc(int curDong,int curCot)
+        {
+            long DiemTong = 0;
+            long DiemTC = 0;
+            int SoQuanTa = 0;
+            int SoQuanDich = 0;
+            for (int Dem = 1; Dem < 6 && curDong + Dem < BanCo.SoDong; Dem++) 
+            {
+                if (MangOco[curDong + Dem, curCot].SoHuu == 1) 
+                    SoQuanTa++;
+                else if(MangOco[curDong + Dem, curCot].SoHuu == 2)
+                {
+                    SoQuanDich++;
+                    DiemTong -= 9;
+                    break;
+                }
+                else
+                    break;               
+            }
+            for (int Dem = 1; Dem < 6 && curDong - Dem >= 0; Dem++)
+            {
+                if (MangOco[curDong - Dem, curCot].SoHuu == 1)
+                    SoQuanTa++;
+                else if (MangOco[curDong - Dem, curCot].SoHuu == 2)
+                {
+                    DiemTong -= 9;
+                    SoQuanDich++;
+                    break;
+                }
+                else
+                    break;
+            }
+            if (SoQuanDich == 2) return 0;
+            DiemTC += MangDiemTanCong[SoQuanTa];
+            DiemTC -= MangDiemTanCong[SoQuanDich];
+            DiemTong += DiemTC;
+            return DiemTong;
+        }
+        private long DiemTC_DuyetNgang(int curDong, int curCot)
+        {
+            long DiemTong = 0;
+            long DiemTC = 0;
+            int SoQuanTa = 0;
+            int SoQuanDich = 0;
+            for (int Dem = 1; Dem < 6 && curCot + Dem < BanCo.SoCot; Dem++)
+            {
+                if (MangOco[curDong, curCot + Dem].SoHuu == 1)
+                    SoQuanTa++;
+                else if (MangOco[curDong, curCot + Dem].SoHuu == 2)
+                {
+                    SoQuanDich++;
+                    DiemTong -= 9;
+                    break;
+                }
+                else
+                    break;
+            }
+            for (int Dem = 1; Dem < 6 && curCot - Dem >= 0; Dem++)
+            {
+                if (MangOco[curDong, curCot - Dem].SoHuu == 1)
+                    SoQuanTa++;
+                else if (MangOco[curDong, curCot - Dem].SoHuu == 2)
+                {
+                    DiemTong -= 9;
+                    SoQuanDich++;
+                    break;
+                }
+                else
+                    break;
+            }
+            if (SoQuanDich == 2) return 0;
+            DiemTC += MangDiemTanCong[SoQuanTa];
+            DiemTC -= MangDiemTanCong[SoQuanDich];
+            DiemTong += DiemTC;
+            return DiemTong;
+        }
+        private long DiemTC_DuyetCheoXuoi(int curDong, int curCot)
+        {
+            long DiemTong = 0;
+            long DiemTC = 0;
+            int SoQuanTa = 0;
+            int SoQuanDich = 0;
+            for (int Dem = 1; Dem < 6 && curCot + Dem < BanCo.SoCot && curDong + Dem < BanCo.SoDong; Dem++)
+            {
+                if (MangOco[curDong + Dem, curCot + Dem].SoHuu == 1)
+                    SoQuanTa++;
+                else if (MangOco[curDong + Dem, curCot + Dem].SoHuu == 2)
+                {
+                    DiemTong -= 9;
+                    SoQuanDich++;
+                    break;
+                }
+                else
+                    break;
+            }
+            for (int Dem = 1; Dem < 6 && curCot - Dem >= 0 && curDong - Dem >= 0; Dem++)
+            {
+                if (MangOco[curDong - Dem, curCot - Dem].SoHuu == 1)
+                    SoQuanTa++;
+                else if (MangOco[curDong - Dem, curCot - Dem].SoHuu == 2)
+                {
+                    DiemTong -= 9;
+                    SoQuanDich++;
+                    break;
+                }
+                else
+                    break;
+            }
+            if (SoQuanDich == 2) return 0;
+            DiemTC += MangDiemTanCong[SoQuanTa];
+            DiemTC -= MangDiemPhongNgu[SoQuanDich + 1];
+            DiemTong += DiemTC;
+            return DiemTong;
+        }
+        private long DiemTC_DuyetCheoNguoc(int curDong, int curCot)
+        {
+            long DiemTong = 0;
+            long DiemTC = 0;
+            int SoQuanTa = 0;
+            int SoQuanDich = 0;
+            for (int Dem = 1; Dem < 6 && curCot + Dem < BanCo.SoCot && curDong - Dem >= 0; Dem++)
+            {
+                if (MangOco[curDong - Dem, curCot + Dem].SoHuu == 1)
+                    SoQuanTa++;
+                else if (MangOco[curDong - Dem, curCot + Dem].SoHuu == 2)
+                {
+                    DiemTong -= 9;
+                    SoQuanDich++;
+                    break;
+                }
+                else
+                    break;
+            }
+            for (int Dem = 1; Dem < 6 && curCot - Dem >= 0  && curDong + Dem < BanCo.SoDong; Dem++)
+            {
+                if (MangOco[curDong + Dem, curCot - Dem].SoHuu == 1)
+                    SoQuanTa++;
+                else if (MangOco[curDong + Dem, curCot - Dem].SoHuu == 2)
+                {
+                    DiemTong -= 9;
+                    SoQuanDich++;
+                    break;
+                }
+                else
+                    break;
+            }
+            if (SoQuanDich == 2) return 0;
+            DiemTC -= MangDiemPhongNgu[SoQuanDich + 1];
+            DiemTC += MangDiemTanCong[SoQuanTa];
+            DiemTong += DiemTC;
+            return DiemTong;
+        }
+        #endregion
+
+
+
+
+        #region Điểm Phòng Ngự
+        private long DiemPN_DuyetDoc(int curDong, int curCot)
+        {
+            long DiemPN = 0;
+            long DiemTong = 0;
+            int SoQuanTa = 0;
+            int SoQuanDich = 0;
+            for (int Dem = 1; Dem < 6 && curDong + Dem < BanCo.SoDong; Dem++)
+            {
+                if (MangOco[curDong + Dem, curCot].SoHuu == 1)
+                {
+                    SoQuanTa++;
+                    break;
+                }
+                else if (MangOco[curDong + Dem, curCot].SoHuu == 2)
+                {
+                    SoQuanDich++;                   
+                }
+                else
+                    break;
+            }
+            for (int Dem = 1; Dem < 6 && curDong - Dem >= 0; Dem++)
+            {
+                if (MangOco[curDong - Dem, curCot].SoHuu == 1)
+                {
+                    SoQuanTa++;
+                    break;
+                }
+                else if (MangOco[curDong - Dem, curCot].SoHuu == 2)
+                {
+                    SoQuanDich++;
+                   
+                }
+                else
+                    break;
+            }
+            if (SoQuanDich == 2) return 0;
+            DiemPN += MangDiemPhongNgu[SoQuanDich];
+            if (SoQuanDich > 0)
+                DiemPN -= MangDiemTanCong[SoQuanTa] *2;
+            DiemTong += DiemPN;
+            return DiemTong;
+        }
+        private long DiemPN_DuyetNgang(int curDong, int curCot)
+        {
+            long DiemPN = 0;
+            long DiemTong = 0;
+            int SoQuanTa = 0;
+            int SoQuanDich = 0;
+            for (int Dem = 1; Dem < 6 && curCot + Dem < BanCo.SoCot; Dem++)
+            {
+                if (MangOco[curDong, curCot + Dem].SoHuu == 1)
+                {
+                    SoQuanTa++;
+                    break;
+                }
+                else if (MangOco[curDong, curCot + Dem].SoHuu == 2)
+                {
+                    SoQuanDich++;
+
+                }
+                else
+                    break;
+            }
+            for (int Dem = 1; Dem < 6 && curCot - Dem >= 0; Dem++)
+            {
+                if (MangOco[curDong, curCot - Dem].SoHuu == 1)
+                {
+                    SoQuanTa++;
+                    break;
+                }
+                else if (MangOco[curDong, curCot - Dem].SoHuu == 2)
+                {
+                    SoQuanDich++;
+                }
+                else
+                    break;
+            }
+            if (SoQuanTa == 2) return 0;
+
+            DiemPN += MangDiemPhongNgu[SoQuanDich];
+            if (SoQuanDich > 0)
+                DiemPN -= MangDiemTanCong[SoQuanTa] *2;
+            DiemTong += DiemPN;
+            return DiemTong;
+        }
+        private long DiemPN_DuyetCheoXuoi(int curDong, int curCot)
+        {
+            long DiemPN = 0;
+            long DiemTong = 0;
+            int SoQuanTa = 0;
+            int SoQuanDich = 0;
+            for (int Dem = 1; Dem < 6 && curCot + Dem < BanCo.SoCot && curDong + Dem < BanCo.SoDong; Dem++)
+            {
+                if (MangOco[curDong + Dem, curCot + Dem].SoHuu == 1)
+                {
+                    SoQuanTa++;
+                    break;
+                }
+                else if (MangOco[curDong + Dem, curCot + Dem].SoHuu == 2)
+                {
+                    SoQuanDich++;
+                }
+                else
+                    break;
+            }
+            for (int Dem = 1; Dem < 6 && curCot - Dem >= 0 && curDong - Dem >= 0; Dem++)
+            {
+                if (MangOco[curDong - Dem, curCot - Dem].SoHuu == 1)
+                {
+                    SoQuanTa++;
+                    break;
+                }
+                else if (MangOco[curDong - Dem, curCot - Dem].SoHuu == 2)
+                {
+                    SoQuanDich++;
+                }
+                else
+                    break;
+            }
+            if (SoQuanTa == 2) return 0;
+            DiemPN += MangDiemPhongNgu[SoQuanDich];
+            if (SoQuanDich > 0)
+                DiemPN -= MangDiemTanCong[SoQuanTa] *2;
+            DiemTong += DiemPN;
+            return DiemTong;
+        }
+        private long DiemPN_DuyetCheoNguoc(int curDong, int curCot)
+        {
+            long DiemPN = 0;
+            long DiemTong = 0;
+            int SoQuanTa = 0;
+            int SoQuanDich = 0;
+            for (int Dem = 1; Dem < 6 && curCot + Dem < BanCo.SoCot && curDong - Dem >= 0; Dem++)
+            {
+                if (MangOco[curDong - Dem, curCot + Dem].SoHuu == 1)
+                {
+                    SoQuanTa++;
+                    break;
+                }
+                else if (MangOco[curDong - Dem, curCot + Dem].SoHuu == 2)
+                {
+                    SoQuanDich++;
+                }
+                else
+                    break;
+            }
+            for (int Dem = 1; Dem < 6 && curCot - Dem >= 0 && curDong + Dem < BanCo.SoDong; Dem++)
+            {
+                if (MangOco[curDong + Dem, curCot - Dem].SoHuu == 1)
+                {
+                    SoQuanTa++;
+                    break;
+                }
+                else if (MangOco[curDong + Dem, curCot - Dem].SoHuu == 2)
+                {
+                    SoQuanDich++;
+                }
+                else
+                    break;
+            }
+            if (SoQuanTa == 2) return 0;
+            DiemPN += MangDiemPhongNgu[SoQuanDich];
+            if (SoQuanDich > 0)
+                DiemPN -= MangDiemTanCong[SoQuanTa] *2;
+            DiemTong += DiemPN;
+            return DiemTong;
+        }
+        #endregion
+
+
+
+
+
+        #endregion
     }
 }
