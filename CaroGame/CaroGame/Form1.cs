@@ -92,5 +92,9 @@ namespace CaroGame
             grs.Clear(pnlBanCo.BackColor);
         }
 
+        private void btnQuit_Click(object sender, EventArgs e)
+        {
+            grs.Clear(pnlBanCo.BackColor);
+        }
     }
 }

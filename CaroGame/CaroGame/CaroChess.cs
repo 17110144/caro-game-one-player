@@ -42,7 +42,7 @@ namespace CaroGame
             MarkO = new TextureBrush(Image.FromFile("O.png"));
             MarkX = new TextureBrush(Image.FromFile("X.png"));
             p = new PictureBox();
-            p.Image = Image.FromFile("picX.png");
+            //p.Image = Image.FromFile("picX.png");
             sbScreen = new SolidBrush(Color.FromArgb(224, 224, 224)); //nút có màu trùng với nền bàn cờ để chèn lên
             BanCo = new BanCo(20, 20);
             MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];
@@ -190,7 +190,14 @@ namespace CaroGame
             {
                 if (DuyetDoc(oco.Dong, oco.Cot, oco.SoHuu) || DuyetNgang(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoXuoi(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoNguoc(oco.Dong, oco.Cot, oco.SoHuu))
                 {
-                    ketThuc = oco.SoHuu == 1 ? KETTHUC.Player1 : KETTHUC.Player2;
+                    if(CheDoChoi == 1)
+                    {
+                        ketThuc = oco.SoHuu == 1 ? KETTHUC.Player1 : KETTHUC.Player2;
+                    }
+                    else
+                    {
+                        ketThuc = oco.SoHuu == 2 ? KETTHUC.Player1 : KETTHUC.COM;
+                    }
                     return true;
                 }
             }
@@ -481,8 +488,6 @@ namespace CaroGame
             return DiemTong;
         }
         #endregion
-
-
 
 
         #region Điểm Phòng Ngự
