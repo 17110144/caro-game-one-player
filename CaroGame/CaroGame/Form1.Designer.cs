@@ -83,7 +83,7 @@
             // 
             this.pnlBanCo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.pnlBanCo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pnlBanCo.Location = new System.Drawing.Point(233, 6);
+            this.pnlBanCo.Location = new System.Drawing.Point(234, 13);
             this.pnlBanCo.Margin = new System.Windows.Forms.Padding(4);
             this.pnlBanCo.Name = "pnlBanCo";
             this.pnlBanCo.Size = new System.Drawing.Size(670, 618);
@@ -132,7 +132,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(915, 639);
+            this.ClientSize = new System.Drawing.Size(917, 645);
             this.Controls.Add(this.btnQuit);
             this.Controls.Add(this.btnNewGame);
             this.Controls.Add(this.pctbMark);
@@ -142,6 +142,7 @@
             this.Controls.Add(this.btnPlayervsPlayer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
             this.Name = "frmCoCaro";
             this.Text = "Game Caro";
             this.Load += new System.EventHandler(this.frmCoCaro_Load);

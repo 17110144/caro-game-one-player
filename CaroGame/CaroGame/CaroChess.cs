@@ -25,7 +25,7 @@ namespace CaroGame
         public static SolidBrush sbScreen;      //nút hình elip để vẽ đè lên 2 quân cờ khi dùng undo
         private OCo[,] MangOco;
         private BanCo BanCo;
-        private Stack<OCo> stk_CacNuocDaDi;
+        private Stack<OCo> _Stk_CacNuocDaDi;
         private int _LuotDi;
         private bool _SanSang;
         private KETTHUC ketThuc;
@@ -35,6 +35,7 @@ namespace CaroGame
         public bool SanSang { get => _SanSang; }
         public int LuotDi { get => _LuotDi; set => _LuotDi = value; }
         public int CheDoChoi { get => _CheDoChoi; set => _CheDoChoi = value; }
+        internal Stack<OCo> Stk_CacNuocDaDi { get => _Stk_CacNuocDaDi; set => _Stk_CacNuocDaDi = value; }
 
         public CaroChess()
         {
@@ -42,11 +43,10 @@ namespace CaroGame
             MarkO = new TextureBrush(Image.FromFile("O.png"));
             MarkX = new TextureBrush(Image.FromFile("X.png"));
             p = new PictureBox();
-            //p.Image = Image.FromFile("picX.png");
             sbScreen = new SolidBrush(Color.FromArgb(224, 224, 224)); //nút có màu trùng với nền bàn cờ để chèn lên
             BanCo = new BanCo(20, 20);
             MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];
-            stk_CacNuocDaDi = new Stack<OCo>();
+            Stk_CacNuocDaDi = new Stack<OCo>();
             LuotDi = 1;
         }
         public void VeBanCo(Graphics g)
@@ -82,7 +82,8 @@ namespace CaroGame
                         MangOco[Dong, Cot].SoHuu = 1;
                         BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, MarkX);
                         LuotDi = 2;
-                        p.Image = Image.FromFile("picO.png");
+                        if(CheDoChoi == 2) p.Image = Image.FromFile("picO.png");
+                        else p.Image = Image.FromFile("picO.png");
                         break;
                     }
                 case 2:
@@ -91,7 +92,8 @@ namespace CaroGame
                         MangOco[Dong, Cot].SoHuu = 2;
                         BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, MarkO);
                         LuotDi = 1;
-                        p.Image = Image.FromFile("picX.png");
+                        if (CheDoChoi == 2) p.Image = Image.FromFile("picO.png");
+                        else p.Image = Image.FromFile("picX.png");
                         break;
                     }
                 default:
@@ -100,13 +102,13 @@ namespace CaroGame
 
             }
 
-            stk_CacNuocDaDi.Push(MangOco[Dong, Cot]);
+            Stk_CacNuocDaDi.Push(MangOco[Dong, Cot]);
 
             return true;
         }
         public void VeLaiQuanCo(Graphics g)
         {
-            foreach (OCo oco in stk_CacNuocDaDi)
+            foreach (OCo oco in Stk_CacNuocDaDi)
             {
                 if (oco.SoHuu == 1)
                 {
@@ -123,7 +125,7 @@ namespace CaroGame
         public void StartPvsP(Graphics g)
         {
             this._SanSang = true;
-            stk_CacNuocDaDi = new Stack<OCo>();
+            Stk_CacNuocDaDi = new Stack<OCo>();
             LuotDi = 1;
             CheDoChoi = 1;
             KhoiTaoMangOco();
@@ -134,21 +136,21 @@ namespace CaroGame
         {
             if (CheDoChoi == 1) 
             {
-                if (stk_CacNuocDaDi.Count != 0)
+                if (Stk_CacNuocDaDi.Count != 0)
                 {
-                    OCo oco = stk_CacNuocDaDi.Pop();
+                    OCo oco = Stk_CacNuocDaDi.Pop();
                     MangOco[oco.Dong, oco.Cot].SoHuu = 0;
                     BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);
                 }
             }
             else
             {
-                if (stk_CacNuocDaDi.Count != 0)
+                if (Stk_CacNuocDaDi.Count >= 1)
                 {
-                    OCo oco = stk_CacNuocDaDi.Pop();                   
+                    OCo oco = Stk_CacNuocDaDi.Pop();                   
                     MangOco[oco.Dong, oco.Cot].SoHuu = 0;
                     BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);
-                    OCo oco2 = stk_CacNuocDaDi.Pop();
+                    OCo oco2 = Stk_CacNuocDaDi.Pop();
                     MangOco[oco2.Dong, oco2.Cot].SoHuu = 0;
                     BanCo.XoaQuanCo(g, oco2.ViTri, sbScreen);
                 }
@@ -174,19 +176,19 @@ namespace CaroGame
                     MessageBox.Show("Máy thắng!");
                     break;
             }
-            stk_CacNuocDaDi.Clear();
+            Stk_CacNuocDaDi.Clear();
             _SanSang = false;
             
         }
 
         public bool KiemTraThang()
         {
-            if (stk_CacNuocDaDi.Count == BanCo.SoCot * BanCo.SoDong)
+            if (Stk_CacNuocDaDi.Count == BanCo.SoCot * BanCo.SoDong)
             {
                 ketThuc = KETTHUC.HoaCo;
                 return true;
             }
-            foreach (OCo oco in stk_CacNuocDaDi)
+            foreach (OCo oco in Stk_CacNuocDaDi)
             {
                 if (DuyetDoc(oco.Dong, oco.Cot, oco.SoHuu) || DuyetNgang(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoXuoi(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoNguoc(oco.Dong, oco.Cot, oco.SoHuu))
                 {
@@ -273,7 +275,7 @@ namespace CaroGame
         public void StartPvsCom(Graphics g)
         {
             this._SanSang = true;
-            stk_CacNuocDaDi = new Stack<OCo>();
+            Stk_CacNuocDaDi = new Stack<OCo>();
             LuotDi = 1;
             CheDoChoi = 2;
             KhoiTaoMangOco();
@@ -286,9 +288,13 @@ namespace CaroGame
 
         public void KhoiDongCom(Graphics g)
         {
-            if(stk_CacNuocDaDi.Count == 0)
+            if(Stk_CacNuocDaDi.Count == 0)
             {
-                DanhCo(BanCo.SoDong / 2 * OCo.ChieuCao + 1, BanCo.SoCot / 2 * OCo.ChieuRong + 1, g, p);                
+                //Thiết lập máy đánh trước
+                //DanhCo(BanCo.SoDong / 2 * OCo.ChieuCao + 1, BanCo.SoCot / 2 * OCo.ChieuRong + 1, g, p);
+                //LuotDi = 2;
+
+                //Thiết lập người đánh trước
                 LuotDi = 2;
             }
             else
@@ -659,9 +665,6 @@ namespace CaroGame
             return DiemTong;
         }
         #endregion
-
-
-
 
 
         #endregion
