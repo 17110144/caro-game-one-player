@@ -26,6 +26,9 @@ namespace CaroGame
         private OCo[,] MangOco;
         private BanCo BanCo;
         private Stack<OCo> _Stk_CacNuocDaDi;
+
+        //private STACK<OCo> _Stk_CacNuocDaDi;      //Stack tự xây dựng
+
         private int _LuotDi;
         private bool _SanSang;
         private KETTHUC ketThuc;
@@ -37,6 +40,8 @@ namespace CaroGame
         public int CheDoChoi { get => _CheDoChoi; set => _CheDoChoi = value; }
         internal Stack<OCo> Stk_CacNuocDaDi { get => _Stk_CacNuocDaDi; set => _Stk_CacNuocDaDi = value; }
 
+        //internal STACK<OCo> Stk_CacNuocDaDi { get => _Stk_CacNuocDaDi; set => _Stk_CacNuocDaDi = value; }
+
         public CaroChess()
         {
             pen = new Pen(Color.Black);
@@ -47,6 +52,8 @@ namespace CaroGame
             BanCo = new BanCo(20, 20);
             MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];
             Stk_CacNuocDaDi = new Stack<OCo>();
+            //Stk_CacNuocDaDi = new STACK<OCo>();
+
             LuotDi = 1;
         }
         public void VeBanCo(Graphics g)
@@ -119,6 +126,8 @@ namespace CaroGame
                     BanCo.VeQuanCo(g, oco.ViTri, MarkO);
                 }
             }
+
+
         }
 
         //Phương thức khởi động chế độ chơi 2 người
@@ -126,6 +135,7 @@ namespace CaroGame
         {
             this._SanSang = true;
             Stk_CacNuocDaDi = new Stack<OCo>();
+            //Stk_CacNuocDaDi = new STACK<OCo>();
             LuotDi = 1;
             CheDoChoi = 1;
             KhoiTaoMangOco();
@@ -136,7 +146,7 @@ namespace CaroGame
         {
             if (CheDoChoi == 1) 
             {
-                if (Stk_CacNuocDaDi.Count != 0)
+                if (Stk_CacNuocDaDi.Count() != 0)
                 {
                     OCo oco = Stk_CacNuocDaDi.Pop();
                     MangOco[oco.Dong, oco.Cot].SoHuu = 0;
@@ -145,7 +155,7 @@ namespace CaroGame
             }
             else
             {
-                if (Stk_CacNuocDaDi.Count >= 1)
+                if (Stk_CacNuocDaDi.Count() >= 1)
                 {
                     OCo oco = Stk_CacNuocDaDi.Pop();                   
                     MangOco[oco.Dong, oco.Cot].SoHuu = 0;
@@ -183,7 +193,7 @@ namespace CaroGame
 
         public bool KiemTraThang()
         {
-            if (Stk_CacNuocDaDi.Count == BanCo.SoCot * BanCo.SoDong)
+            if (Stk_CacNuocDaDi.Count() == BanCo.SoCot * BanCo.SoDong)
             {
                 ketThuc = KETTHUC.HoaCo;
                 return true;
@@ -276,6 +286,7 @@ namespace CaroGame
         {
             this._SanSang = true;
             Stk_CacNuocDaDi = new Stack<OCo>();
+            //Stk_CacNuocDaDi = new STACK<OCo>();
             LuotDi = 1;
             CheDoChoi = 2;
             KhoiTaoMangOco();
@@ -288,7 +299,7 @@ namespace CaroGame
 
         public void KhoiDongCom(Graphics g)
         {
-            if(Stk_CacNuocDaDi.Count == 0)
+            if(Stk_CacNuocDaDi.Count() == 0)
             {
                 //Thiết lập máy đánh trước
                 //DanhCo(BanCo.SoDong / 2 * OCo.ChieuCao + 1, BanCo.SoCot / 2 * OCo.ChieuRong + 1, g, p);

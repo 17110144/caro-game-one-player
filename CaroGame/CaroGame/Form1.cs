@@ -28,13 +28,11 @@ namespace CaroGame
 
         private void frmCoCaro_Load(object sender, EventArgs e)
         {
-            grs.Clear(pnlBanCo.BackColor);
         }
 
         private void pnlBanCo_Paint(object sender, PaintEventArgs e)
         {
-            caroChess.VeBanCo(grs);
-            caroChess.VeLaiQuanCo(grs);
+
         }
 
         private void pnlBanCo_MouseClick(object sender, MouseEventArgs e)
@@ -68,10 +66,9 @@ namespace CaroGame
         }
 
         private void btnUndo_Click(object sender, EventArgs e)
-        {
-           
+        {     
             caroChess.Undo(grs);
-            if(caroChess.Stk_CacNuocDaDi.Count != 0)
+            if(caroChess.CheDoChoi == 1 && caroChess.Stk_CacNuocDaDi.Count != 0)
             {
                 if (caroChess.LuotDi == 1)
                 {
@@ -93,7 +90,14 @@ namespace CaroGame
 
         private void btnQuit_Click(object sender, EventArgs e)
         {
-            grs.Clear(pnlBanCo.BackColor);
+            Application.Exit();
         }
+
+        private void btnRepaint_Click(object sender, EventArgs e)
+        {
+            caroChess.VeBanCo(grs);
+            caroChess.VeLaiQuanCo(grs);
+        }
+
     }
 }
