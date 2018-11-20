@@ -19,7 +19,6 @@ namespace CaroGame
     class CaroChess
     {
         public static Pen pen;
-
         public static TextureBrush MarkX;
         public static TextureBrush MarkO;
         public static SolidBrush sbScreen;      //nút hình elip để vẽ đè lên 2 quân cờ khi dùng undo
@@ -126,8 +125,6 @@ namespace CaroGame
                     BanCo.VeQuanCo(g, oco.ViTri, MarkO);
                 }
             }
-
-
         }
 
         //Phương thức khởi động chế độ chơi 2 người
