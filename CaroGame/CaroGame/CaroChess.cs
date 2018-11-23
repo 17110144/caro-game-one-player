@@ -24,9 +24,8 @@ namespace CaroGame
         public static SolidBrush sbScreen;      //nút hình elip để vẽ đè lên 2 quân cờ khi dùng undo
         private OCo[,] MangOco;
         private BanCo BanCo;
-        private Stack<OCo> _Stk_CacNuocDaDi;
 
-        //private STACK<OCo> _Stk_CacNuocDaDi;      //Stack tự xây dựng
+        private STACK<OCo> _Stk_CacNuocDaDi;      //Stack tự xây dựng
 
         private int _LuotDi;
         private bool _SanSang;
@@ -37,9 +36,8 @@ namespace CaroGame
         public bool SanSang { get => _SanSang; }
         public int LuotDi { get => _LuotDi; set => _LuotDi = value; }
         public int CheDoChoi { get => _CheDoChoi; set => _CheDoChoi = value; }
-        internal Stack<OCo> Stk_CacNuocDaDi { get => _Stk_CacNuocDaDi; set => _Stk_CacNuocDaDi = value; }
 
-        //internal STACK<OCo> Stk_CacNuocDaDi { get => _Stk_CacNuocDaDi; set => _Stk_CacNuocDaDi = value; }
+        internal STACK<OCo> Stk_CacNuocDaDi { get => _Stk_CacNuocDaDi; set => _Stk_CacNuocDaDi = value; }
 
         public CaroChess()
         {
@@ -50,8 +48,7 @@ namespace CaroGame
             sbScreen = new SolidBrush(Color.FromArgb(224, 224, 224)); //nút có màu trùng với nền bàn cờ để chèn lên
             BanCo = new BanCo(20, 20);
             MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];
-            Stk_CacNuocDaDi = new Stack<OCo>();
-            //Stk_CacNuocDaDi = new STACK<OCo>();
+            Stk_CacNuocDaDi = new STACK<OCo>();
 
             LuotDi = 1;
         }
@@ -131,8 +128,7 @@ namespace CaroGame
         public void StartPvsP(Graphics g)
         {
             this._SanSang = true;
-            Stk_CacNuocDaDi = new Stack<OCo>();
-            //Stk_CacNuocDaDi = new STACK<OCo>();
+            Stk_CacNuocDaDi = new STACK<OCo>();
             LuotDi = 1;
             CheDoChoi = 1;
             KhoiTaoMangOco();
@@ -282,8 +278,7 @@ namespace CaroGame
         public void StartPvsCom(Graphics g)
         {
             this._SanSang = true;
-            Stk_CacNuocDaDi = new Stack<OCo>();
-            //Stk_CacNuocDaDi = new STACK<OCo>();
+            Stk_CacNuocDaDi = new STACK<OCo>();
             LuotDi = 1;
             CheDoChoi = 2;
             KhoiTaoMangOco();

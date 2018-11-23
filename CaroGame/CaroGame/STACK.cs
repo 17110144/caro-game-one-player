@@ -10,26 +10,30 @@ namespace CaroGame
     {
         private T[] a = new T[100]; 
         private int top = -1;
+
+        public T[] A { get => a; set => a = value; }
+        public int Top1 { get => top; set => top = value; }
+
         public void Push(T x)
         {
-            this.a[top + 1] = x;
-            this.top++;
+            this.A[Top1 + 1] = x;
+            this.Top1++;
         }
         public T Top()
         {
-            return this.a[this.top];
+            return this.A[this.Top1];
         }
         public T Pop()
         {
-            T t = this.a[this.top + 1];
-            this.top--;
+            T t = this.A[this.Top1 + 1];
+            this.Top1--;
             return t;
         }
         public int Count()
         {
             int dem = 0;
-            int temtop = this.top;
-            while(this.top != -1)
+            int temtop = this.Top1;
+            while(this.Top1 != -1)
             {
                 dem++;
                 temtop--;
@@ -38,9 +42,9 @@ namespace CaroGame
         }
         public void Clear()
         {
-            while (this.top != -1)
+            while (this.Top1 != -1)
             {
-                this.top--;
+                this.Top1--;
             }
         }
     }
