@@ -109,19 +109,33 @@ namespace CaroGame
 
             return true;
         }
+
         public void VeLaiQuanCo(Graphics g)
         {
-            foreach (OCo oco in Stk_CacNuocDaDi)
+            //foreach (OCo oco in Stk_CacNuocDaDi.A)
+            //{
+            //    if (oco.SoHuu == 1)
+            //    {
+            //        BanCo.VeQuanCo(g, oco.ViTri, MarkX);
+            //    }
+            //    else if (oco.SoHuu == 2)
+            //    {
+            //        BanCo.VeQuanCo(g, oco.ViTri, MarkO);
+            //    }
+            //}
+
+            for(int i=0;i< Stk_CacNuocDaDi.Top;i++)
             {
-                if (oco.SoHuu == 1)
+                if(Stk_CacNuocDaDi.A[i].SoHuu==1)
                 {
-                    BanCo.VeQuanCo(g, oco.ViTri, MarkX);
+                    BanCo.VeQuanCo(g, Stk_CacNuocDaDi.A[i].ViTri, MarkX);
                 }
-                else if (oco.SoHuu == 2)
+                else if (Stk_CacNuocDaDi.A[i].SoHuu == 2)
                 {
-                    BanCo.VeQuanCo(g, oco.ViTri, MarkO);
+                    BanCo.VeQuanCo(g, Stk_CacNuocDaDi.A[i].ViTri, MarkO);
                 }
             }
+               
         }
 
         //Phương thức khởi động chế độ chơi 2 người
@@ -191,21 +205,39 @@ namespace CaroGame
                 ketThuc = KETTHUC.HoaCo;
                 return true;
             }
-            foreach (OCo oco in Stk_CacNuocDaDi)
+            //foreach (OCo oco in Stk_CacNuocDaDi.A)
+            //{
+            //    if (DuyetDoc(oco.Dong, oco.Cot, oco.SoHuu) || DuyetNgang(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoXuoi(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoNguoc(oco.Dong, oco.Cot, oco.SoHuu))
+            //    {
+            //        if(CheDoChoi == 1)
+            //        {
+            //            ketThuc = oco.SoHuu == 1 ? KETTHUC.Player1 : KETTHUC.Player2;
+            //        }
+            //        else
+            //        {
+            //            ketThuc = oco.SoHuu == 2 ? KETTHUC.Player1 : KETTHUC.COM;
+            //        }
+            //        return true;
+            //    }
+            //}
+
+            for (int i = 0; i < Stk_CacNuocDaDi.Top; i++)
             {
-                if (DuyetDoc(oco.Dong, oco.Cot, oco.SoHuu) || DuyetNgang(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoXuoi(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoNguoc(oco.Dong, oco.Cot, oco.SoHuu))
+                if (DuyetDoc(Stk_CacNuocDaDi.A[i].Dong, Stk_CacNuocDaDi.A[i].Cot, Stk_CacNuocDaDi.A[i].SoHuu) || DuyetNgang(Stk_CacNuocDaDi.A[i].Dong, Stk_CacNuocDaDi.A[i].Cot, Stk_CacNuocDaDi.A[i].SoHuu) || DuyetCheoXuoi(Stk_CacNuocDaDi.A[i].Dong, Stk_CacNuocDaDi.A[i].Cot, Stk_CacNuocDaDi.A[i].SoHuu) || DuyetCheoNguoc(Stk_CacNuocDaDi.A[i].Dong, Stk_CacNuocDaDi.A[i].Cot, Stk_CacNuocDaDi.A[i].SoHuu))
                 {
-                    if(CheDoChoi == 1)
+                    if (CheDoChoi == 1)
                     {
-                        ketThuc = oco.SoHuu == 1 ? KETTHUC.Player1 : KETTHUC.Player2;
+                        ketThuc = Stk_CacNuocDaDi.A[i].SoHuu == 1 ? KETTHUC.Player1 : KETTHUC.Player2;
                     }
                     else
                     {
-                        ketThuc = oco.SoHuu == 2 ? KETTHUC.Player1 : KETTHUC.COM;
+                        ketThuc = Stk_CacNuocDaDi.A[i].SoHuu == 2 ? KETTHUC.Player1 : KETTHUC.COM;
                     }
                     return true;
                 }
             }
+
+
             return false;
         }
 
