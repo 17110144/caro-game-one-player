@@ -36,6 +36,5 @@ namespace CaroGame
             this.ViTri = vitri;
             this.SoHuu = sohuu;
         }
-
     }
 }

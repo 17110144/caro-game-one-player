@@ -25,7 +25,7 @@ namespace CaroGame
         private OCo[,] MangOco;
         private BanCo BanCo;
 
-        private STACK<OCo> _Stk_CacNuocDaDi;      //Stack tự xây dựng
+        private STACK<OCo> _Stk;      //Stack tự xây dựng
 
         private int _LuotDi;
         private bool _SanSang;
@@ -37,7 +37,7 @@ namespace CaroGame
         public int LuotDi { get => _LuotDi; set => _LuotDi = value; }
         public int CheDoChoi { get => _CheDoChoi; set => _CheDoChoi = value; }
 
-        internal STACK<OCo> Stk_CacNuocDaDi { get => _Stk_CacNuocDaDi; set => _Stk_CacNuocDaDi = value; }
+        internal STACK<OCo> Stk { get => _Stk; set => _Stk = value; }
 
         public CaroChess()
         {
@@ -46,9 +46,9 @@ namespace CaroGame
             MarkX = new TextureBrush(Image.FromFile("X.png"));
             p = new PictureBox();
             sbScreen = new SolidBrush(Color.FromArgb(224, 224, 224)); //nút có màu trùng với nền bàn cờ để chèn lên
-            BanCo = new BanCo(20, 20);
-            MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];
-            Stk_CacNuocDaDi = new STACK<OCo>();
+            BanCo = new BanCo(20, 20);                                //khởi tạo một bàn cờ 20x20
+            MangOco = new OCo[BanCo.SoDong, BanCo.SoCot];                  
+            Stk = new STACK<OCo>();                                   //Ngăn sếp chứa các nước đã đi
 
             LuotDi = 1;
         }
@@ -81,17 +81,17 @@ namespace CaroGame
             {
                 case 1:
                     {
-                       
+
                         MangOco[Dong, Cot].SoHuu = 1;
                         BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, MarkX);
                         LuotDi = 2;
-                        if(CheDoChoi == 2) p.Image = Image.FromFile("picO.png");
+                        if (CheDoChoi == 2) p.Image = Image.FromFile("picO.png");
                         else p.Image = Image.FromFile("picO.png");
                         break;
                     }
                 case 2:
                     {
-                       
+
                         MangOco[Dong, Cot].SoHuu = 2;
                         BanCo.VeQuanCo(g, MangOco[Dong, Cot].ViTri, MarkO);
                         LuotDi = 1;
@@ -104,45 +104,34 @@ namespace CaroGame
                     break;
 
             }
-
-            Stk_CacNuocDaDi.Push(MangOco[Dong, Cot]);
+            //Lưu vết bước đi
+            Stk.Push(MangOco[Dong, Cot]);
 
             return true;
         }
 
         public void VeLaiQuanCo(Graphics g)
         {
-            //foreach (OCo oco in Stk_CacNuocDaDi.A)
-            //{
-            //    if (oco.SoHuu == 1)
-            //    {
-            //        BanCo.VeQuanCo(g, oco.ViTri, MarkX);
-            //    }
-            //    else if (oco.SoHuu == 2)
-            //    {
-            //        BanCo.VeQuanCo(g, oco.ViTri, MarkO);
-            //    }
-            //}
 
-            for(int i=0;i< Stk_CacNuocDaDi.Top;i++)
+            for (int i = 0; i < Stk.Count(); i++)
             {
-                if(Stk_CacNuocDaDi.A[i].SoHuu==1)
+                if (Stk.A[i].SoHuu == 1)
                 {
-                    BanCo.VeQuanCo(g, Stk_CacNuocDaDi.A[i].ViTri, MarkX);
+                    BanCo.VeQuanCo(g, Stk.A[i].ViTri, MarkX);
                 }
-                else if (Stk_CacNuocDaDi.A[i].SoHuu == 2)
+                else if (Stk.A[i].SoHuu == 2)
                 {
-                    BanCo.VeQuanCo(g, Stk_CacNuocDaDi.A[i].ViTri, MarkO);
+                    BanCo.VeQuanCo(g, Stk.A[i].ViTri, MarkO);
                 }
             }
-               
+
         }
 
         //Phương thức khởi động chế độ chơi 2 người
         public void StartPvsP(Graphics g)
         {
             this._SanSang = true;
-            Stk_CacNuocDaDi = new STACK<OCo>();
+            Stk = new STACK<OCo>();
             LuotDi = 1;
             CheDoChoi = 1;
             KhoiTaoMangOco();
@@ -151,23 +140,23 @@ namespace CaroGame
 
         public void Undo(Graphics g)
         {
-            if (CheDoChoi == 1) 
+            if (CheDoChoi == 1)
             {
-                if (Stk_CacNuocDaDi.Count() != 0)
+                if (Stk.Count() != 0)
                 {
-                    OCo oco = Stk_CacNuocDaDi.Pop();
+                    OCo oco = Stk.Pop();
                     MangOco[oco.Dong, oco.Cot].SoHuu = 0;
                     BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);
                 }
             }
             else
             {
-                if (Stk_CacNuocDaDi.Count() >= 1)
+                if (Stk.Count() >= 1)
                 {
-                    OCo oco = Stk_CacNuocDaDi.Pop();                   
+                    OCo oco = Stk.Pop();
                     MangOco[oco.Dong, oco.Cot].SoHuu = 0;
                     BanCo.XoaQuanCo(g, oco.ViTri, sbScreen);
-                    OCo oco2 = Stk_CacNuocDaDi.Pop();
+                    OCo oco2 = Stk.Pop();
                     MangOco[oco2.Dong, oco2.Cot].SoHuu = 0;
                     BanCo.XoaQuanCo(g, oco2.ViTri, sbScreen);
                 }
@@ -193,45 +182,30 @@ namespace CaroGame
                     MessageBox.Show("Máy thắng!");
                     break;
             }
-            Stk_CacNuocDaDi.Clear();
+            Stk.Clear();
             _SanSang = false;
-            
+
         }
 
         public bool KiemTraThang()
         {
-            if (Stk_CacNuocDaDi.Count() == BanCo.SoCot * BanCo.SoDong)
+            if (Stk.Count() == BanCo.SoCot * BanCo.SoDong)
             {
                 ketThuc = KETTHUC.HoaCo;
                 return true;
             }
-            //foreach (OCo oco in Stk_CacNuocDaDi.A)
-            //{
-            //    if (DuyetDoc(oco.Dong, oco.Cot, oco.SoHuu) || DuyetNgang(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoXuoi(oco.Dong, oco.Cot, oco.SoHuu) || DuyetCheoNguoc(oco.Dong, oco.Cot, oco.SoHuu))
-            //    {
-            //        if(CheDoChoi == 1)
-            //        {
-            //            ketThuc = oco.SoHuu == 1 ? KETTHUC.Player1 : KETTHUC.Player2;
-            //        }
-            //        else
-            //        {
-            //            ketThuc = oco.SoHuu == 2 ? KETTHUC.Player1 : KETTHUC.COM;
-            //        }
-            //        return true;
-            //    }
-            //}
 
-            for (int i = 0; i < Stk_CacNuocDaDi.Top; i++)
+            for (int i = 0; i < Stk.Count(); i++)
             {
-                if (DuyetDoc(Stk_CacNuocDaDi.A[i].Dong, Stk_CacNuocDaDi.A[i].Cot, Stk_CacNuocDaDi.A[i].SoHuu) || DuyetNgang(Stk_CacNuocDaDi.A[i].Dong, Stk_CacNuocDaDi.A[i].Cot, Stk_CacNuocDaDi.A[i].SoHuu) || DuyetCheoXuoi(Stk_CacNuocDaDi.A[i].Dong, Stk_CacNuocDaDi.A[i].Cot, Stk_CacNuocDaDi.A[i].SoHuu) || DuyetCheoNguoc(Stk_CacNuocDaDi.A[i].Dong, Stk_CacNuocDaDi.A[i].Cot, Stk_CacNuocDaDi.A[i].SoHuu))
+                if (DuyetDoc(Stk.A[i].Dong, Stk.A[i].Cot, Stk.A[i].SoHuu) || DuyetNgang(Stk.A[i].Dong, Stk.A[i].Cot, Stk.A[i].SoHuu) || DuyetCheoXuoi(Stk.A[i].Dong, Stk.A[i].Cot, Stk.A[i].SoHuu) || DuyetCheoNguoc(Stk.A[i].Dong, Stk.A[i].Cot, Stk.A[i].SoHuu))
                 {
                     if (CheDoChoi == 1)
                     {
-                        ketThuc = Stk_CacNuocDaDi.A[i].SoHuu == 1 ? KETTHUC.Player1 : KETTHUC.Player2;
+                        ketThuc = Stk.A[i].SoHuu == 1 ? KETTHUC.Player1 : KETTHUC.Player2;
                     }
                     else
                     {
-                        ketThuc = Stk_CacNuocDaDi.A[i].SoHuu == 2 ? KETTHUC.Player1 : KETTHUC.COM;
+                        ketThuc = Stk.A[i].SoHuu == 2 ? KETTHUC.Player1 : KETTHUC.COM;
                     }
                     return true;
                 }
@@ -310,7 +284,7 @@ namespace CaroGame
         public void StartPvsCom(Graphics g)
         {
             this._SanSang = true;
-            Stk_CacNuocDaDi = new STACK<OCo>();
+            Stk = new STACK<OCo>();
             LuotDi = 1;
             CheDoChoi = 2;
             KhoiTaoMangOco();
@@ -323,7 +297,7 @@ namespace CaroGame
 
         public void KhoiDongCom(Graphics g)
         {
-            if(Stk_CacNuocDaDi.Count() == 0)
+            if (Stk.Count() == 0)
             {
                 //Thiết lập máy đánh trước
                 //DanhCo(BanCo.SoDong / 2 * OCo.ChieuCao + 1, BanCo.SoCot / 2 * OCo.ChieuRong + 1, g, p);
@@ -343,15 +317,15 @@ namespace CaroGame
         {
             OCo kq = new OCo();
             long DiemToiUu = 0;
-            for (int i = 0; i < BanCo.SoDong; i++) 
+            for (int i = 0; i < BanCo.SoDong; i++)
             {
-                for (int j = 0; j < BanCo.SoCot; j++) 
+                for (int j = 0; j < BanCo.SoCot; j++)
                 {
-                    if(MangOco[i,j].SoHuu == 0)
+                    if (MangOco[i, j].SoHuu == 0)
                     {
-                        long DiemTanCong = DiemTC_DuyetDoc(i,j) + DiemTC_DuyetNgang(i,j) + DiemTC_DuyetCheoXuoi(i,j) + DiemTC_DuyetCheoNguoc(i,j);
-                        long DiemPhongNgu = DiemPN_DuyetDoc(i,j) + DiemPN_DuyetNgang(i,j) + DiemPN_DuyetCheoXuoi(i,j) + DiemPN_DuyetCheoNguoc(i,j);
-                       
+                        long DiemTanCong = DiemTC_DuyetDoc(i, j) + DiemTC_DuyetNgang(i, j) + DiemTC_DuyetCheoXuoi(i, j) + DiemTC_DuyetCheoNguoc(i, j);
+                        long DiemPhongNgu = DiemPN_DuyetDoc(i, j) + DiemPN_DuyetNgang(i, j) + DiemPN_DuyetCheoXuoi(i, j) + DiemPN_DuyetCheoNguoc(i, j);
+
                         if (DiemPhongNgu <= DiemTanCong)
                         {
                             if (DiemToiUu <= DiemTanCong)
@@ -362,7 +336,7 @@ namespace CaroGame
                         }
                         else
                         {
-                            if(DiemToiUu <= DiemPhongNgu)
+                            if (DiemToiUu <= DiemPhongNgu)
                             {
                                 DiemToiUu = DiemPhongNgu;
                                 kq = new OCo(MangOco[i, j].Dong, MangOco[i, j].Cot, MangOco[i, j].ViTri, MangOco[i, j].SoHuu);
@@ -376,24 +350,24 @@ namespace CaroGame
         }
 
         #region Điểm Tấn Công
-        private long DiemTC_DuyetDoc(int curDong,int curCot)
+        private long DiemTC_DuyetDoc(int curDong, int curCot)
         {
             long DiemTong = 0;
             long DiemTC = 0;
             int SoQuanTa = 0;
             int SoQuanDich = 0;
-            for (int Dem = 1; Dem < 6 && curDong + Dem < BanCo.SoDong; Dem++) 
+            for (int Dem = 1; Dem < 6 && curDong + Dem < BanCo.SoDong; Dem++)
             {
-                if (MangOco[curDong + Dem, curCot].SoHuu == 1) 
+                if (MangOco[curDong + Dem, curCot].SoHuu == 1)
                     SoQuanTa++;
-                else if(MangOco[curDong + Dem, curCot].SoHuu == 2)
+                else if (MangOco[curDong + Dem, curCot].SoHuu == 2)
                 {
                     SoQuanDich++;
                     DiemTong -= 9;
                     break;
                 }
                 else
-                    break;               
+                    break;
             }
             for (int Dem = 1; Dem < 6 && curDong - Dem >= 0; Dem++)
             {
@@ -509,7 +483,7 @@ namespace CaroGame
                 else
                     break;
             }
-            for (int Dem = 1; Dem < 6 && curCot - Dem >= 0  && curDong + Dem < BanCo.SoDong; Dem++)
+            for (int Dem = 1; Dem < 6 && curCot - Dem >= 0 && curDong + Dem < BanCo.SoDong; Dem++)
             {
                 if (MangOco[curDong + Dem, curCot - Dem].SoHuu == 1)
                     SoQuanTa++;
@@ -547,7 +521,7 @@ namespace CaroGame
                 }
                 else if (MangOco[curDong + Dem, curCot].SoHuu == 2)
                 {
-                    SoQuanDich++;                   
+                    SoQuanDich++;
                 }
                 else
                     break;
@@ -562,7 +536,7 @@ namespace CaroGame
                 else if (MangOco[curDong - Dem, curCot].SoHuu == 2)
                 {
                     SoQuanDich++;
-                   
+
                 }
                 else
                     break;
@@ -570,7 +544,7 @@ namespace CaroGame
             if (SoQuanDich == 2) return 0;
             DiemPN += MangDiemPhongNgu[SoQuanDich];
             if (SoQuanDich > 0)
-                DiemPN -= MangDiemTanCong[SoQuanTa] *2;
+                DiemPN -= MangDiemTanCong[SoQuanTa] * 2;
             DiemTong += DiemPN;
             return DiemTong;
         }
@@ -613,7 +587,7 @@ namespace CaroGame
 
             DiemPN += MangDiemPhongNgu[SoQuanDich];
             if (SoQuanDich > 0)
-                DiemPN -= MangDiemTanCong[SoQuanTa] *2;
+                DiemPN -= MangDiemTanCong[SoQuanTa] * 2;
             DiemTong += DiemPN;
             return DiemTong;
         }
@@ -654,7 +628,7 @@ namespace CaroGame
             if (SoQuanTa == 2) return 0;
             DiemPN += MangDiemPhongNgu[SoQuanDich];
             if (SoQuanDich > 0)
-                DiemPN -= MangDiemTanCong[SoQuanTa] *2;
+                DiemPN -= MangDiemTanCong[SoQuanTa] * 2;
             DiemTong += DiemPN;
             return DiemTong;
         }
@@ -695,7 +669,7 @@ namespace CaroGame
             if (SoQuanTa == 2) return 0;
             DiemPN += MangDiemPhongNgu[SoQuanDich];
             if (SoQuanDich > 0)
-                DiemPN -= MangDiemTanCong[SoQuanTa] *2;
+                DiemPN -= MangDiemTanCong[SoQuanTa] * 2;
             DiemTong += DiemPN;
             return DiemTong;
         }

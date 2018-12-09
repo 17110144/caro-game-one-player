@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CaroGame
 {
-    class STACK<T>
+    class STACK<T>  //đây là kỹ thuật generic của ngôn ngữ C# cho chép người dùng có thể
+                    //thể đưa bất cứ kiểu dữ liệu nào vào class này
     {
         private T[] a = new T[100]; 
         private int _top = -1;
