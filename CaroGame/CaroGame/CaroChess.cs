@@ -124,7 +124,6 @@ namespace CaroGame
                     BanCo.VeQuanCo(g, Stk.A[i].ViTri, MarkO);
                 }
             }
-
         }
 
         //Phương thức khởi động chế độ chơi 2 người

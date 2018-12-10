@@ -68,6 +68,7 @@ namespace CaroGame
         private void btnUndo_Click(object sender, EventArgs e)
         {     
             caroChess.Undo(grs);
+
             if(caroChess.CheDoChoi == 1 && caroChess.Stk.Count() != 0)
             {
                 if (caroChess.LuotDi == 1)
